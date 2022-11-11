@@ -109,7 +109,7 @@ Same as above but also visualizes the scene and camera position in 3D:
 1. Download the full dataset (1.6GB): [acronym.tar.gz](https://drive.google.com/file/d/1zcPARTCQx2oeiKk7a-wdN_CN-RUVX56c/view?usp=sharing)
 2. Download the ShapeNetSem meshes from https://www.shapenet.org/
 3. Create watertight versions of the downloaded meshes:
-   1. Clone and build: https://github.com/hjwdzh/Manifold
+   1. Clone and build: https://github.com/hjwdzh/Manifold EDIT: new repo available!! -> https://github.com/hjwdzh/ManifoldPlus
    2. Create a watertight mesh version assuming the object path is model.obj: `manifold model.obj temp.watertight.obj -s`
    3. Simplify it: `simplify -i temp.watertight.obj -o model.obj -m -r 0.02`
 
