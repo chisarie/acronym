@@ -373,7 +373,7 @@ def load_mesh(filename, mesh_root_dir, scale=None):
     else:
         raise RuntimeError("Unknown file ending:", filename)
 
-    obj_mesh = trimesh.load(os.path.join(mesh_root_dir, mesh_fname))
+    obj_mesh = trimesh.load(os.path.join(mesh_root_dir, mesh_fname), force="mesh")
     obj_mesh = obj_mesh.apply_scale(mesh_scale)
 
     return obj_mesh
