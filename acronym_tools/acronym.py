@@ -397,12 +397,13 @@ def load_grasps(filename):
         data = h5py.File(filename, "r")
         T = np.array(data["grasps/transforms"])
         success = np.array(data["grasps/qualities/flex/object_in_gripper"])
+        width = np.array(data["gripper/configuration"])
     else:
         raise RuntimeError("Unknown file ending:", filename)
-    return T, success
+    return T, success, width
 
 
-def create_gripper_marker(color=[0, 0, 255], tube_radius=0.001, sections=6):
+def create_gripper_marker(color=[0, 0, 255], gripper_width=0.08, tube_radius=0.002, sections=6):
     """Create a 3D mesh visualizing a parallel yaw gripper. It consists of four cylinders.
 
     Args:
@@ -413,29 +414,33 @@ def create_gripper_marker(color=[0, 0, 255], tube_radius=0.001, sections=6):
     Returns:
         trimesh.Trimesh: A mesh that represents a simple parallel yaw gripper.
     """
+    left_x = - 0.5 * (gripper_width + tube_radius)
+    right_x = 0.5 * (gripper_width + tube_radius)
+    mid_z = 0.066
+    top_z = 0.112
+    cfr = trimesh.creation.cylinder(
+        radius=tube_radius,
+        sections=sections,
+        segment=[
+            [right_x, 0.0, mid_z],
+            [right_x, 0.0, top_z],
+        ],
+    )
     cfl = trimesh.creation.cylinder(
         radius=0.002,
         sections=sections,
         segment=[
-            [4.10000000e-02, -7.27595772e-12, 6.59999996e-02],
-            [4.10000000e-02, -7.27595772e-12, 1.12169998e-01],
-        ],
-    )
-    cfr = trimesh.creation.cylinder(
-        radius=0.002,
-        sections=sections,
-        segment=[
-            [-4.100000e-02, -7.27595772e-12, 6.59999996e-02],
-            [-4.100000e-02, -7.27595772e-12, 1.12169998e-01],
+            [left_x, 0.0, mid_z],
+            [left_x, 0.0, top_z],
         ],
     )
     cb1 = trimesh.creation.cylinder(
-        radius=0.002, sections=sections, segment=[[0, 0, 0], [0, 0, 6.59999996e-02]]
+        radius=0.002, sections=sections, segment=[[0, 0, 0], [0, 0, mid_z]]
     )
     cb2 = trimesh.creation.cylinder(
         radius=0.002,
         sections=sections,
-        segment=[[-4.100000e-02, 0, 6.59999996e-02], [4.100000e-02, 0, 6.59999996e-02]],
+        segment=[[left_x, 0, mid_z], [right_x, 0, mid_z]],
     )
 
     tmp = trimesh.util.concatenate([cb1, cb2, cfr, cfl])
