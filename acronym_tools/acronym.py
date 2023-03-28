@@ -427,7 +427,7 @@ def create_gripper_marker(color=[0, 0, 255], gripper_width=0.08, tube_radius=0.0
         ],
     )
     cfl = trimesh.creation.cylinder(
-        radius=0.002,
+        radius=tube_radius,
         sections=sections,
         segment=[
             [left_x, 0.0, mid_z],
@@ -435,10 +435,10 @@ def create_gripper_marker(color=[0, 0, 255], gripper_width=0.08, tube_radius=0.0
         ],
     )
     cb1 = trimesh.creation.cylinder(
-        radius=0.002, sections=sections, segment=[[0, 0, 0], [0, 0, mid_z]]
+        radius=tube_radius, sections=sections, segment=[[0, 0, 0], [0, 0, mid_z]]
     )
     cb2 = trimesh.creation.cylinder(
-        radius=0.002,
+        radius=tube_radius,
         sections=sections,
         segment=[[left_x, 0, mid_z], [right_x, 0, mid_z]],
     )
